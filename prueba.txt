@@ -1,2 +1,7 @@
-esto es una prueba!!
-es hora de helado!!
+git status
+git add . 
+git status
+git commit -m "mensaje"
+git push origin
+
+
