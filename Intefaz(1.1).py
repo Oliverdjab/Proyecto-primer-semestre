@@ -118,69 +118,7 @@ def main_windows():
 
 
 
-
-
-
-def incrementar_contador(i):
-    contadores[i] += 1
-    labels[i].config(text=f"{opciones[i]}: {contadores[i]}")
-
-def crear_botones(inicio, fin):
-    for i in range(inicio, fin):
-        boton = tk.Button(frame, text=f"{opciones[i]}", command=lambda i=i: incrementar_contador(i))
-        boton.grid(row=i % 18, column=0, pady=5)
-        botones.append(boton)
-        labels[i] = tk.Label(frame, text=f"{opciones[i]}: {contadores[i]}")
-        labels[i].grid(row=i % 18, column=1, padx=10)
-
-def cambiar_pagina(direccion):
-    global pagina_actual
-    if direccion == "adelante":
-        pagina_actual += 1
-    elif direccion == "atras":
-        pagina_actual -= 1
-
-    if pagina_actual < 0:
-        pagina_actual = 0
-    elif pagina_actual >= total_paginas:
-        pagina_actual = total_paginas - 1
-
-    actualizar_botones()
-
-def actualizar_botones():
-    for boton in botones:
-        boton.grid_forget()
-    inicio = pagina_actual * botones_por_pagina
-    fin = min((pagina_actual + 1) * botones_por_pagina, len(opciones))
-    crear_botones(inicio, fin)
-
-def iniciar_interfaz():
-    global frame, frame_botones_pagina, root
-    root = tk.Tk()
-    root.geometry("1200x900")
-    root.resizable(0,0)
-    root.configure(bg="#23BAC4")
-    root.title("Contadores de Opciones")
-
-    global labels, botones
-    labels = {}
-    botones = []
-
-    frame = tk.Frame(root,bg="#338DFF")
-    frame.grid(row=0, column=0)
-
-    crear_botones(0, min(botones_por_pagina, len(opciones)))
-
-    frame_botones_pagina = tk.Frame(root, bg = "#23BAC4")
-    frame_botones_pagina.grid(row=1, column=0, pady=10)
-
-    btn_atras = tk.Button(frame_botones_pagina, text="Página anterior", command=lambda: cambiar_pagina("atras"), bg="#68FF33")
-    btn_atras.grid(row=0, column=0, padx=5)
-
-    btn_adelante = tk.Button(frame_botones_pagina, text="Página siguiente", command=lambda: cambiar_pagina("adelante"), bg="#68FF33")
-    btn_adelante.grid(row=0, column=1, padx=5)
-
-    root.mainloop()
+#============================Ventana de los botones==========================================
 
 opciones = [
     ['Z328', '2024-06-5', '08:13:00', '10:35:00', 244463, 538669, 1666594, 'Santa Marta', 'Bogota'],
@@ -261,12 +199,103 @@ opciones = [
 ['V560', '2024-06-26', '08:41:00', '11:20:00', 118816, 675485, 2104917, 'Santa Marta', 'Cali'],
 ]
 
-contadores = [0 for _ in range(len(opciones))]
 
+contadores = [0] * len(opciones)
+
+# Configuración de la paginación
 botones_por_pagina = 18
-total_paginas = (len(opciones) + botones_por_pagina - 1) // botones_por_pagina
 pagina_actual = 0
+total_paginas = (len(opciones) + botones_por_pagina - 1) // botones_por_pagina
 
+def incrementar_contador(i):
+    contadores[i] += 1
+    labels[i].config(text=f"{opciones[i]}: {contadores[i]}")
+
+def crear_botones(inicio, fin):
+    for i in range(inicio, fin):
+        boton = tk.Button(frame, text=f"{opciones[i]}", command=lambda i=i: incrementar_contador(i))
+        boton.grid(row=i % 18, column=0, pady=5)
+        botones.append(boton)
+        labels[i] = tk.Label(frame, text=f"{opciones[i]}: {contadores[i]}")
+        labels[i].grid(row=i % 18, column=1, padx=10)
+
+
+
+def cambiar_pagina(direccion):
+    global pagina_actual
+    if direccion == "adelante":
+        pagina_actual += 1
+    elif direccion == "atras":
+        pagina_actual -= 1
+
+    if pagina_actual < 0:
+        pagina_actual = 0
+    elif pagina_actual >= total_paginas:
+        pagina_actual = total_paginas - 1
+
+    actualizar_botones()
+
+def actualizar_botones():
+    for boton in botones:
+        boton.grid_forget()
+    inicio = pagina_actual * botones_por_pagina
+    fin = min((pagina_actual + 1) * botones_por_pagina, len(opciones))
+    crear_botones(inicio, fin)
+
+    if pagina_actual == total_paginas - 1:
+        boton_extra.grid(row=19, column=0, columnspan=2, pady=20)
+    else:
+        boton_extra.grid_forget()
+
+def iniciar_interfaz():
+    global frame, frame_botones_pagina, root, labels, botones, boton_extra
+    root = tk.Tk()
+    root.geometry("1200x900")
+    root.resizable(0,0)
+    root.configure(bg="#23BAC4")
+    root.title("Contadores de Opciones")
+
+    global labels, botones
+    labels = {}
+    botones = []
+
+    frame = tk.Frame(root,bg="#338DFF")
+    frame.grid(row=0, column=0)
+
+    crear_botones(0, min(botones_por_pagina, len(opciones)))
+
+    frame_botones_pagina = tk.Frame(root, bg = "#23BAC4")
+    frame_botones_pagina.grid(row=1, column=0, pady=10)
+
+    btn_atras = tk.Button(frame_botones_pagina, text="Página anterior", command=lambda: cambiar_pagina("atras"), bg="#68FF33")
+    btn_atras.grid(row=0, column=0, padx=5)
+
+    btn_adelante = tk.Button(frame_botones_pagina, text="Página siguiente", command=lambda: cambiar_pagina("adelante"), bg="#68FF33")
+    btn_adelante.grid(row=0, column=1, padx=5)
+
+    
+    boton_extra = tk.Button(root, text="Done", bg="#FFD700", command=asientos)
+
+
+    root.mainloop()
+
+def asientos():
+    root.destroy()
+    seats_Airplane()
+    seats_Airplane.deiconify()
+
+def seats_Airplane():
+    seats = tk.Tk()
+    seats.title("Choose your seat")
+    seats.geometry("800x600")
+    seats.resizable(0,0)
+    seats.configure(bg="#23BAC4")
+
+    etiqueta_seats = tk.Label(seats, text="Seleccione su asiento", font=("Times New Roman", 18, "bold"), fg="white", bg="#0B666A")
+    etiqueta_seats.pack(padx=100)
+
+
+    seats.mainloop()
 
 if __name__ == '__main__':
     main_windows()
