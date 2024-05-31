@@ -7,15 +7,18 @@ def travel_windows():
     windows_for_destination.title("Usuario")
     windows_for_destination.geometry("800x600")
     windows_for_destination.resizable(0,0)
-    windows_for_destination.configure(bg="#23BAC4")
+    windows_for_destination.configure(bg="#FFF9ED")
 
-    etiqueta_destination = tk.Label(windows_for_destination, text = "¿Ya tienes una cuenta?",font = ("Times New Roman", 18 ,"bold"), fg = "white", bg="#0B666A")
-    etiqueta_destination.pack(padx = 100)
+    frame = tk.Frame(windows_for_destination, bg= "#F5A3C8")
+    frame.pack(expand= True)
+    etiqueta_destination = tk.Label(frame, text = "¿Ya tienes una cuenta?",font = ("Times New Roman", 18 ), fg = "white", bg="#F5A3C8")
 
-    marco_izquierdo_for_destination = tk.Frame(windows_for_destination, bg="#23BAC4")
+    etiqueta_destination.grid(row = 1, column= 0, padx= 100, pady= 50)
+
+    marco_izquierdo_for_destination = tk.Frame(windows_for_destination, bg="#FFF9ED")
     marco_izquierdo_for_destination.pack(side = "left", padx = 50)
 
-    marco_derecho_for_destination = tk.Frame(windows_for_destination, bg="#23BAC4")
+    marco_derecho_for_destination = tk.Frame(windows_for_destination, bg="#FFF9ED")
     marco_derecho_for_destination.pack(side = "right", padx = 50)
 
 
@@ -299,21 +302,33 @@ def asientos():
     seats_Airplane()
     seats_Airplane.deiconify()
 
+
+def crear_asientos(frame1, row, column):
+    for r in range(row):
+        for c in range(column):
+            asiento_id = f"{chr(65+c)}{r+1}"
+            if 1 <= (r+1) <= 4:
+                bg_color = "lightblue"
+            elif 5 <= (r+1) <= 8:
+                bg_color = "lightgreen"
+            else:
+                bg_color = "lightcoral"
+            etiqueta = tk.Label(frame1, text=asiento_id, width=5, height=2, 
+                                bg= bg_color, relief="raised", borderwidth=1)
+            etiqueta.grid(row=r, column=c, padx=5, pady=5)
+
 def seats_Airplane():
     seats = tk.Tk()
-    seats.title("Choose your seat")
-    seats.geometry("800x600")
-    seats.resizable(0,0)
-    seats.configure(bg="#23BAC4")
+    seats.title("Selección de Asientos de Avión")
+    seats.geometry("1200x900")
+    seats.resizable(0, 0)
 
-
-
-    etiqueta_seats = tk.Label(seats, text="Seleccione categoria", font=("Times New Roman", 18, "bold"), fg="white", bg="#0B666A")
-    etiqueta_seats.pack(padx=100)
-
-    frame = tk.Frame(seats, bg = "#338DFF")
-    
-
+    row = 12  # Número de filas de asientos
+    column = 6  # Número de columnas de asientos
+    frame1 = tk.Frame(seats, bg="#F4D7EB")
+    frame1.place(relx= 0.8, rely= 0.2, anchor= "n")
+    seats.configure(bg="#FFF9ED")
+    crear_asientos(frame1, row, column)
 
     seats.mainloop()
 
